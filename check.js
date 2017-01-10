@@ -36,9 +36,8 @@ function dubslevel(postid) {
     return 0;
 }
 function get(post, level) {
-    jej = post.getElementsByClassName("postNum desktop");
-    jej[0].style.backgroundColor = colors[level];
-    kek = jej[0].getElementsByTagName("a");
-    lel = kek[1].textContent;
-    kek[1].innerHTML = lel.slice(0, lel.length-level-1) + "<b>" + lel.slice(lel.length-level-1) + "</b>";
+    id = post.getElementsByClassName("postNum desktop")[0].getElementsByTagName("a")[1];
+    idtext = id.textContent;
+    id.style.backgroundColor = colors[level];
+    id.innerHTML = idtext.slice(0, idtext.length-level-1) + "<b>" + idtext.slice(idtext.length-level-1) + "</b>";
 }
