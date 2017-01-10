@@ -1,0 +1,18 @@
+{
+    "manifest_version": 2,
+    "name": "dubsdetector",
+    "description": "to help you check'em",
+    "browser_action": {
+        "default_title": "check'em"
+    },
+    "version": "0.1",
+    "content_scripts": [
+        {
+            "matches": [
+                "http://boards.4chan.org/*",
+                "https://boards.4chan.org/*"
+            ],
+            "js": ["check.js"]
+        }
+    ]
+}
