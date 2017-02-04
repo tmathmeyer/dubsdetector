@@ -41,3 +41,35 @@ function get(post, level) {
     id.style.backgroundColor = colors[level];
     id.innerHTML = idtext.slice(0, idtext.length-level-1) + "<b>" + idtext.slice(idtext.length-level-1) + "</b>";
 }
+
+
+
+
+MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+
+// define a new observer
+var obs = new MutationObserver(function(mutations, observer) {
+    // look through all mutations that just occured
+    for(var i=0; i<mutations.length; ++i) {
+        // look through all added nodes of this mutation
+        for(var j=0; j<mutations[i].addedNodes.length; ++j) {
+            // was a child added with ID of 'bar'?
+		if(mutations[i].addedNodes[j].className == "postContainer replyContainer"){
+			replys = mutations[i].addedNodes[j].getElementsByClassName("post reply");
+
+			Array.prototype.forEach.call(replys, function(post) {
+			    if((level = dubslevel(post.id)) >0)
+			        get(post, level);
+				console.log(level);
+			});
+		}
+        }
+    }
+});
+
+obs.observe(document.body, {
+    attributes: true,
+    childList: true,
+    characterData: true,
+    subtree: true
+});
