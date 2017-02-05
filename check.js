@@ -17,11 +17,14 @@ colors = [
 Array.prototype.forEach.call(ops, function(post) {
     if((level = dubslevel(post.id)) >0)
         get(post, level);
+    isReplace(post);
+
 });
 
 Array.prototype.forEach.call(replys, function(post) {
     if((level = dubslevel(post.id)) >0)
         get(post, level);
+    isReplace(post);
 });
 function dubslevel(postid) {
     last = postid[postid.length - 1];
@@ -35,11 +38,25 @@ function dubslevel(postid) {
     }
     return 0;
 }
+
+
+function isReplace(post){
+    hrefs = post.getElementsByTagName("a")
+	Array.prototype.forEach.call(hrefs, function(anchor) {
+	if(anchor.href.includes("is2.4chan.org/"))
+		anchor.href = anchor.href.replace("is2.4chan.org/", "is.4chan.org/");
+	//console.log(anchor.href);
+	});
+
+}
+
+
 function get(post, level) {
     id = post.getElementsByClassName("postNum desktop")[0].getElementsByTagName("a")[1];
     idtext = id.textContent;
     id.style.backgroundColor = colors[level];
     id.innerHTML = idtext.slice(0, idtext.length-level-1) + "<b>" + idtext.slice(idtext.length-level-1) + "</b>";
+
 }
 
 
@@ -56,11 +73,11 @@ var obs = new MutationObserver(function(mutations, observer) {
             // was a child added with ID of 'bar'?
 		if(mutations[i].addedNodes[j].className == "postContainer replyContainer"){
 			replys = mutations[i].addedNodes[j].getElementsByClassName("post reply");
-
 			Array.prototype.forEach.call(replys, function(post) {
-			    if((level = dubslevel(post.id)) >0)
-			        get(post, level);
-				console.log(level);
+				if((level = dubslevel(post.id)) >0)
+					get(post, level);
+				isReplace(post);
+//				console.log(level);
 			});
 		}
         }
